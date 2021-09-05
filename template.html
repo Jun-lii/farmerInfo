@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+        菜農資訊
+        </title>
+        <style type="text/css">
+            option{font-size:30px}
+            #crop_table{border-collapse:collapse; width:100%}
+            thead{line-height: 30px}
+            tr,td{border:1px solid Gray}
+        </style>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script type="text/javascript"> 
+            function btn_event(){
+                let obj=document.getElementById("crop_list");
+                let index=obj.selectedIndex;
+                let value=obj.options[index].value;
+                let table_string='<table border="1" cellpadding="1" cellspacing="0" style="border-color: Gray;" width="100%"><thead><td>市場</td><td>產品</td><td>上價</td><td>中價</td><td>下價</td><td>平均價</td></thead></table>'
+                console.clear();
+                let div=document.getElementById("crop_price");
+                if(document.getElementById("crop_table")){
+                    div.removeChild(document.getElementById("crop_table"));
+                }
+                axios.get(`https://data.coa.gov.tw/api/v1/AgriProductsTransType/?CropName=${value}`)
+                    .then(function(response){
+                        data=response.data.Data;
+                        let table=document.createElement("table")
+                        let tbody=document.createElement("tbody")
+                        table.setAttribute("id","crop_table")
+                        table.innerHTML='<thead valign="middle" align="center"><td>產品編號</td><td>產品</td><td>市場</td><td>上價</td><td>中價</td><td>下價</td><td>平均價</td></thead>';
+                        div.appendChild(table);
+
+                        //建Table
+                        for (let i in data){
+                        let tr=document.createElement("tr");
+                        td_str=`
+                        <td>${data[i]["CropCode"]}</td>
+                        <td>${data[i]["CropName"]}</td>
+                        <td>${data[i]["MarketName"]}</td>
+                        <td align="right">${data[i]["Upper_Price"]}</td>
+                        <td align="right">${data[i]["Middle_Price"]}</td>
+                        <td align="right">${data[i]["Lower_Price"]}</td>
+                        <td align="right">${data[i]["Avg_Price"]}</td>`;
+                        tr.innerHTML=td_str;
+                        tbody.appendChild(tr)
+                        }
+                        table.appendChild(tbody)
+                    })
+                    .catch(function(error){
+                        console.log(error);
+                        alert(error);
+                    });
+            }
+        </script>
+    </head>
+    <body>
+        <h1 id="today" align="center" valign="middle"></h1>
+        <table id="PoP6h" border="1" cellpadding="1" cellspacing="0" style="border-color: Gray;" width="100%" >
+            <tr><h3>西螺鎮 降雨機率</h3></tr>
+            <tr id="date">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="HH" align="center">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="PoP" align="right">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <h3>個人菜價資訊</h3>
+        <div id="price"></div>
+        <h3>所有市場價格資訊</h3>
+        <div style='font-size:30px'>選擇品種
+            <select id='crop_list' style='font-size:30px'>
+                <optgroup style='font-size:20px' label='小白菜'>
+                <option>小白菜-其他</option>
+                <option>小白菜-土白菜</option>
+                <option>小白菜-蚵仔白</option>
+                <option>小白菜-奶油白</option>
+                <option>小白菜-水耕</option>
+                </optgroup>
+                <optgroup style='font-size:20px' label='青江白菜'>
+                    <option>青江白菜-小梗</option>
+                    <option>青江白菜-大梗</option>
+                    <option>青江白菜-水耕</option>
+                </optgroup>
+                <optgroup style='font-size:20px' label='菠菜'>
+                    <option>菠菜-圓葉</option>
+                    <option>菠菜-角葉</option>
+                    <option>菠菜-甜菠菜</option>
+                    <option>菠菜-進口</option>
+                </optgroup>
+                <optgroup style='font-size:20px' label='萵苣菜'>
+                    <option>萵苣菜-其他</option>
+                    <option>萵苣菜-廣東萵</option>
+                    <option>萵苣菜-結球萵</option>
+                    <option>萵苣菜-本島圓葉</option>
+                    <option>萵苣菜-本島尖葉</option>
+                    <option>萵苣菜-油麥菜</option>
+                    <option>萵苣菜-蘿美</option>
+                    <option>萵苣菜-紅捲綠捲</option>
+                    <option>萵苣菜-水耕</option>
+                    <option>萵苣菜-進口</option>
+                </optgroup>
+                <optgroup style='font-size:20px' label='芥菜'>
+                    <option>芥菜-芥菜仁</option>
+                    <option>芥菜-大芥菜</option>
+                    <option>芥菜-小芥菜</option>
+                    <option>芥菜-翡翠娃娃菜</option>
+                </optgroup>
+                <optgroup style='font-size:20px' label='芥藍菜'>
+                    <option>芥藍菜-其他</option>
+                    <option>芥藍菜-蒲公</option>
+                    <option>芥藍菜</option>
+                    <option>芥藍菜-芥藍芽</option>
+                    <option>芥藍菜-進口</option>
+                </optgroup>
+                <optgroup style='font-size:20px' label='油菜'>
+                    <option>油菜</option>
+                    <option>油菜-小松菜</option>
+                </optgroup>
+            </select>
+            <button id='btn' style='font-size:30px; margin-left:100px; margin-bottom: 30px;' onclick=btn_event()>查詢</button>
+        </div>
+        <div id="crop_price" ></div>
+    </body>
+</html>

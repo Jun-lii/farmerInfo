@@ -1,0 +1,8 @@
+# 忽略 secret.yml 檔案
+test.*
+chromedriver.exe
+GCP指令.txt
+vegprice.html
+# 忽略 Tesseract-OCR 目錄下的所有檔案
+Tesseract-OCR/
+
