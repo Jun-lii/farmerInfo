@@ -28,13 +28,14 @@
                         let table=document.createElement("table")
                         let tbody=document.createElement("tbody")
                         table.setAttribute("id","crop_table")
-                        table.innerHTML='<thead valign="middle" align="center"><td>產品編號</td><td>產品</td><td>市場</td><td>上價</td><td>中價</td><td>下價</td><td>平均價</td></thead>';
+                        table.innerHTML='<thead valign="middle" align="center"><td>日期</td><td>產品編號</td><td>產品</td><td>市場</td><td>上價</td><td>中價</td><td>下價</td><td>平均價</td></thead>';
                         div.appendChild(table);
 
                         //建Table
                         for (let i in data){
                         let tr=document.createElement("tr");
                         td_str=`
+                        <td>${data[i]["TransDate"]}</td>
                         <td>${data[i]["CropCode"]}</td>
                         <td>${data[i]["CropName"]}</td>
                         <td>${data[i]["MarketName"]}</td>
