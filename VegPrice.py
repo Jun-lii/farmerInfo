@@ -100,6 +100,7 @@ target_url = 'https://amis.afa.gov.tw/coop1/CoopVegSupplierTransInfoQuery.aspx'
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
 options.add_argument('--headless')
+options.add_argument('--no-sandbox')
 
 driver = webdriver.Chrome(executable_path='./chromedriver',options=options)
 driver.get(url)
@@ -115,7 +116,8 @@ driver.find_element_by_id('ctl00_contentPlaceHolder_btnQuery').click()
 time.sleep(0.5)
 alert = EC.alert_is_present()
 if alert(driver):
-    veg_price = f'<h1 align="center" valign="middle">{alert(driver).text}</h1>'
+    today=time.strftime('%Y-%m-%d',time.localtime())
+    veg_price = f'<h1 align="center" valign="middle">{today} {alert(driver).text}</h1>'
     alert(driver).accept()
 else:
     veg_price = get_price_html()
